@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Sentimento dum Ocidental · Cesário Verde</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    :root {
+      --paper: #f2e8d5;
+      --paper-dark: #e8d9bc;
+      --ink: #1c1007;
+      --ink-soft: #3d2b1a;
+      --sepia: #8b5e3c;
+      --rust: #8b2500;
+      --gold: #c8963e;
+      --gold-light: #e8c97a;
+      --border: #9c7c50;
+      --shadow: rgba(44, 26, 14, 0.18);
+    }
+ 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+ 
+    /* Texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+ 
+    /* ──── HEADER ──── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 60px 20px 40px;
+      border-bottom: 2px solid var(--border);
+      overflow: hidden;
+      background: linear-gradient(180deg, #ecdfc6 0%, var(--paper) 100%);
+    }
+ 
+    .header-ornament {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(90deg, var(--rust) 0px, var(--rust) 12px, var(--gold) 12px, var(--gold) 16px, var(--rust) 16px);
+    }
+ 
+    .poem-tag {
+      display: inline-block;
+      font-family: 'Lora', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sepia);
+      border: 1px solid var(--border);
+      padding: 4px 16px;
+      margin-bottom: 22px;
+      opacity: 0;
+    }
+ 
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--ink);
+      opacity: 0;
+    }
+ 
+    header h1 span {
+      color: var(--rust);
+    }
+ 
+    .author-line {
+      margin-top: 16px;
+      font-family: 'IM Fell English', serif;
+      font-size: 1.15rem;
+      color: var(--sepia);
+      opacity: 0;
+    }
+ 
+    .subtitle {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: var(--border);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+ 
+    .divider-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+      opacity: 0;
+    }
+ 
+    .divider-ornament .line {
+      height: 1px;
+      width: 80px;
+      background: var(--border);
+    }
+ 
+    .divider-ornament .diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+ 
+    /* ──── SCORE BADGE ──── */
+    .score-badge {
+      position: absolute;
+      top: 28px; right: 28px;
+      width: 64px; height: 64px;
+      border: 2px solid var(--rust);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper-dark);
+      box-shadow: 0 2px 12px var(--shadow);
+      opacity: 0;
+    }
+ 
+    .score-badge .score-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--rust);
+      line-height: 1;
+    }
+ 
+    .score-badge .score-label {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--sepia);
+      text-transform: uppercase;
+    }
+ 
+    /* ──── NAV ──── */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      background: var(--paper-dark);
+      border-bottom: 2px solid var(--border);
+      padding: 0 16px;
+      opacity: 0;
+    }
+ 
+    .nav-btn {
+      position: relative;
+      padding: 16px 28px;
+      font-family: 'Lora', serif;
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--sepia);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+ 
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--rust);
+      transform: scaleX(0);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+ 
+    .nav-btn.active { color: var(--rust); }
+    .nav-btn.active::after { transform: scaleX(1); }
+    .nav-btn:hover { color: var(--ink); }
+ 
+    /* ──── MAIN ──── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+ 
+    /* ──── SECTIONS ──── */
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+      animation: fadeSection 0.4s ease;
+    }
+ 
+    @keyframes fadeSection {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    /* ──── QUESTION CARD ──── */
+    .q-card {
+      background: #ffffffaa;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 36px 40px;
+      margin-bottom: 28px;
+      position: relative;
+      box-shadow: 4px 4px 0 var(--paper-dark), 4px 4px 0 1px var(--border);
+    }
+ 
+    .q-card::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 8px; right: -8px; bottom: -8px;
+      border: 1px solid var(--border);
+      z-index: -1;
+      border-radius: 2px;
+    }
+ 
+    .q-number {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+ 
+    .q-number span {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--rust);
+      line-height: 1;
+      opacity: 0.18;
+    }
+ 
+    .q-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--ink);
+      border-bottom: 1px solid var(--gold-light);
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+ 
+    .q-body {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--ink-soft);
+    }
+ 
+    .q-body p { margin-bottom: 12px; }
+    .q-body strong { color: var(--rust); font-weight: 600; }
+ 
+    /* Correction badge */
+    .correction-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff3cd;
+      border: 1px solid #e8a800;
+      color: #7a5800;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+ 
+    .correction-tag::before { content: '✎'; font-size: 0.85rem; }
+ 
+    /* Highlight quote */
+    .verse-quote {
+      display: block;
+      background: var(--paper-dark);
+      border-left: 3px solid var(--rust);
+      padding: 12px 18px;
+      margin: 14px 0;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.02rem;
+      color: var(--ink);
+    }
+ 
+    /* Sensory pills */
+    .sensory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+ 
+    .sensory-pill {
+      background: var(--paper-dark);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 14px 16px;
+      cursor: default;
+    }
+ 
+    .pill-icon {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+ 
+    .pill-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--rust);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+ 
+    .pill-text {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      margin-top: 4px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+ 
+    /* ──── QUIZ SECTION ──── */
+    #quiz-section {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+ 
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+ 
+    .quiz-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--ink);
+    }
+ 
+    .quiz-header p {
+      color: var(--sepia);
+      margin-top: 8px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+ 
+    .progress-bar {
+      height: 3px;
+      background: var(--paper-dark);
+      border: 1px solid var(--border);
+      margin: 20px auto;
+      max-width: 340px;
+      position: relative;
+    }
+ 
+    .progress-fill {
+      height: 100%;
+      background: var(--rust);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+ 
+    .q-counter {
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      color: var(--sepia);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+ 
+    .quiz-card {
+      background: #fff9f0;
+      border: 1px solid var(--border);
+      padding: 36px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+ 
+    .quiz-question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-bottom: 26px;
+    }
+ 
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+ 
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Lora', serif;
+      font-size: 0.93rem;
+      color: var(--ink-soft);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      border-radius: 2px;
+    }
+ 
+    .option-btn:hover:not(:disabled) {
+      background: var(--paper-dark);
+      border-color: var(--sepia);
+    }
+ 
+    .option-btn .opt-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--sepia);
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+ 
+    .option-btn.correct {
+      background: #e6f4ea;
+      border-color: #2e7d32;
+      color: #1b5e20;
+    }
+ 
+    .option-btn.correct .opt-letter {
+      background: #2e7d32;
+      color: white;
+      border-color: #2e7d32;
+    }
+ 
+    .option-btn.wrong {
+      background: #fce4e4;
+      border-color: #c62828;
+      color: #7f0000;
+    }
+ 
+    .option-btn.wrong .opt-letter {
+      background: #c62828;
+      color: white;
+      border-color: #c62828;
+    }
+ 
+    .option-btn:disabled { cursor: not-allowed; }
+ 
+    .feedback-msg {
+      margin-top: 18px;
+      padding: 12px 18px;
+      border-radius: 2px;
+      font-size: 0.9rem;
+      font-style: italic;
+      display: none;
+    }
+ 
+    .feedback-msg.show { display: block; }
+    .feedback-msg.ok { background: #e6f4ea; border-left: 3px solid #2e7d32; color: #1b5e20; }
+    .feedback-msg.fail { background: #fce4e4; border-left: 3px solid #c62828; color: #7f0000; }
+ 
+    .next-btn {
+      display: block;
+      margin: 22px auto 0;
+      padding: 12px 36px;
+      background: var(--rust);
+      color: var(--paper);
+      border: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: none;
+    }
+ 
+    .next-btn:hover { background: #6b1a00; transform: translateY(-1px); }
+    .next-btn.show { display: block; }
+ 
+    /* ──── RESULT SCREEN ──── */
+    .result-screen {
+      text-align: center;
+      padding: 40px 20px;
+      display: none;
+    }
+ 
+    .result-screen.show { display: block; }
+ 
+    .result-circle {
+      width: 120px; height: 120px;
+      border: 3px solid var(--rust);
+      border-radius: 50%;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      background: var(--paper-dark);
+    }
+ 
+    .result-score {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--rust);
+      line-height: 1;
+    }
+ 
+    .result-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--sepia);
+      text-transform: uppercase;
+    }
+ 
+    .result-msg {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+ 
+    .result-sub {
+      color: var(--sepia);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+ 
+    .restart-btn {
+      padding: 12px 32px;
+      border: 2px solid var(--rust);
+      background: none;
+      color: var(--rust);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+ 
+    .restart-btn:hover { background: var(--rust); color: var(--paper); }
+ 
+    /* ──── CONTEXT SECTION ──── */
+    .context-hero {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+ 
+    @media (max-width: 660px) {
+      .context-hero { grid-template-columns: 1fr; }
+      header h1 { font-size: 2rem; }
+      .q-card { padding: 24px 20px; }
+      .quiz-card { padding: 24px 20px; }
+    }
+ 
+    .context-text { font-size: 0.96rem; line-height: 1.9; color: var(--ink-soft); }
+    .context-text p { margin-bottom: 12px; }
+ 
+    .poem-excerpt {
+      background: var(--paper-dark);
+      border: 1px solid var(--border);
+      padding: 24px;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      line-height: 2;
+      color: var(--ink);
+      position: relative;
+    }
+ 
+    .poem-excerpt::before {
+      content: '"';
+      font-size: 5rem;
+      color: var(--gold-light);
+      line-height: 0;
+      position: absolute;
+      top: 32px; left: 12px;
+      font-family: 'Playfair Display', serif;
+    }
+ 
+    .poem-excerpt p { padding-left: 24px; }
+ 
+    .poem-excerpt footer {
+      margin-top: 14px;
+      padding-left: 24px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      color: var(--sepia);
+      font-style: normal;
+      text-transform: uppercase;
+    }
+ 
+    /* ──── ABOUT / AUTHOR ──── */
+    .author-card {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      background: var(--paper-dark);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+    }
+ 
+    .author-icon {
+      width: 72px; height: 72px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      flex-shrink: 0;
+      background: var(--paper);
+    }
+ 
+    .author-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+ 
+    .author-info p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+ 
+    /* ──── FOOTER ──── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--border);
+      text-transform: uppercase;
+      background: var(--paper-dark);
+    }
+ 
+    /* ──── HOVER INTERACTIONS ──── */
+    .q-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+ 
+    .q-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 6px 6px 0 var(--paper-dark), 6px 6px 0 1px var(--border);
+    }
+ 
+    /* ──── SCROLL REVEAL ──── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+ 
+    /* ──── LOADING ──── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+ 
+    .loading-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--sepia);
+      margin-bottom: 20px;
+    }
+ 
+    .loading-line {
+      width: 180px;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .loading-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--rust);
+      animation: loadSlide 1.2s ease infinite;
+    }
+ 
+    @keyframes loadSlide {
+      to { left: 100%; }
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- Loading screen -->
+<div id="loading">
+  <div class="loading-title">A carregar o poema...</div>
+  <div class="loading-line"></div>
+</div>
+ 
+<!-- ──── HEADER ──── -->
+<header>
+  <div class="header-ornament"></div>
+  <div class="score-badge" id="score-badge">
+    <span class="score-num">12</span>
+    <span class="score-label">/ 20</span>
+  </div>
+  <div class="poem-tag" id="poem-tag">Equipa 2 · Estrofes 4–6</div>
+  <h1 id="main-title">O Sentimento<br><span>dum Ocidental</span></h1>
+  <p class="author-line" id="author-line">Cesário Verde · Parte III — «Ao gás»</p>
+  <p class="subtitle" id="subtitle">Português · 11.º E · 2025/2026</p>
+  <div class="divider-ornament" id="divider">
+    <div class="line"></div>
+    <div class="diamond"></div>
+    <div class="line"></div>
+  </div>
+</header>
+ 
+<!-- ──── NAV ──── -->
+<nav id="main-nav">
+  <button class="nav-btn active" onclick="showSection('contexto', this)">Contexto</button>
+  <button class="nav-btn" onclick="showSection('q1', this)">Questão 1</button>
+  <button class="nav-btn" onclick="showSection('q2', this)">Questão 2</button>
+  <button class="nav-btn" onclick="showSection('q3', this)">Questão 3</button>
+  <button class="nav-btn" onclick="showSection('q4', this)">Questão 4</button>
+  <button class="nav-btn" onclick="showSection('quiz', this)">Quiz 🖋</button>
+</nav>
+ 
+<!-- ──── MAIN ──── -->
+<main>
+ 
+  <!-- CONTEXTO -->
+  <section id="contexto" class="section active">
+    <div class="context-hero reveal">
+      <div class="context-text">
+        <div class="q-title" style="margin-bottom:16px;">O Poema e o Contexto</div>
+        <p>«O Sentimento dum Ocidental» é um poema de <strong>Cesário Verde</strong> (1855–1886), escrito em 1880 e publicado postumamente. Considerado a sua obra-prima, retrata uma deambulação pelo <strong>Lisboa do fim do dia</strong>, onde o «eu lírico» observa a cidade com um olhar simultaneamente fascinado e crítico.</p>
+        <p>A <strong>Parte III — «Ao gás»</strong> situa-se no coração da cidade iluminada pelo gás, onde surgem figuras do quotidiano urbano: o padeiro, o forjador, o cuteleiro — elementos de uma Lisboa trabalhadora e honesta, contrastando com a decadência que o poeta também denuncia.</p>
+        <p>O poema destaca-se pelo uso intenso do <strong>sensorialismo</strong> — perceções tácteis, visuais e olfativas — e pela <strong>crítica social</strong> velada através da poesia realista.</p>
+      </div>
+      <div class="poem-excerpt">
+        <p>Batem as horas; num saudoso grito<br>
+        A tower clock acorda a cidade inteira;<br>
+        Ao longo das paredes da fronteira<br>
+        Sobem os mochos, sombrios e aflitos.</p>
+        <p>De uma padaria escala-se, inda quente,<br>
+        Um cheiro salutar e honesto a pão do forno.</p>
+        <footer>— Cesário Verde</footer>
+      </div>
+    </div>
+    <div class="author-card reveal">
+      <div class="author-icon">🖋</div>
+      <div class="author-info">
+        <h3>Cesário Verde (1855–1886)</h3>
+        <p>Poeta realista português, pioneiro de uma poesia urbana e sensorialista. A sua obra, marcada por uma visão crítica da Lisboa oitocentista, influenciou profundamente o modernismo português. «O Sentimento dum Ocidental» é considerado um dos maiores poemas da língua portuguesa.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- QUESTÃO 1 -->
+  <section id="q1" class="section">
+    <div class="q-card reveal">
+      <div class="q-number"><span>1</span></div>
+      <div class="q-title">Apresentação dos elementos da sociedade que se destacam pela positiva</div>
+      
+      <div class="q-body">
+        <p>Na estrofe 4, o «eu lírico» destaca as profissões de <strong>cuteleiro</strong>, <strong>forjador</strong> e <strong>padeiro</strong>, apresentando-as como exemplos positivos da sociedade urbana lisboeta.</p>
+        <span class="verse-quote">«De uma padaria escala-se, inda quente, / Um cheiro salutar e honesto a pão do forno.»</span>
+        <p>Estas profissões são valorizadas por três razões essenciais:</p>
+        <p><strong>1. Dignidade e honestidade:</strong> São ofícios manuais que exigem dedicação, perícia e trabalho honesto — valores que o poeta contrapõe à corrupção moral e à manipulação clerical da época.</p>
+        <p><strong>2. Utilidade social:</strong> O cuteleiro produz ferramentas, o forjador trabalha o metal com força bruta e criatividade, e o padeiro alimenta a população — funções essenciais à comunidade, enraizadas na tradição.</p>
+        <p><strong>3. Autenticidade:</strong> Em contraste com a prostituição e a hipocrisia clerical — que representam a decadência moral —, estas figuras surgem como <strong>autênticas e vitais</strong>, encarnando os valores do trabalho como dignificação do Homem.</p>
+        <p>O padeiro, em particular, é símbolo de conforto e sustento: o «cheiro salutar e honesto a pão do forno» evoca não apenas o olfato, mas também uma sensação de segurança e bem-estar coletivo.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- QUESTÃO 2 -->
+  <section id="q2" class="section">
+    <div class="q-card reveal">
+      <div class="q-number"><span>2</span></div>
+      <div class="q-title">Expressividade da sinestesia presente nos versos 15 e 16</div>
+      <div class="q-body">
+        <span class="verse-quote">«De uma padaria escala-se, inda quente, / Um cheiro salutar e honesto a pão do forno.»</span>
+        <p>Através da sinestesia presente nestes versos, o «eu lírico» combina duas perceções sensoriais distintas, criando um efeito de grande expressividade:</p>
+        <p><strong>Perceção olfativa:</strong> A expressão «cheira» e «cheiro salutar e honesto» evocam o aroma do pão acabado de sair do forno — um odor quente, reconfortante e associado à autenticidade do trabalho do padeiro.</p>
+        <p><strong>Perceção tátil (temperatura):</strong> O vocábulo «quente» em «escala-se, inda quente» remete para a sensação térmica de calor que emana da padaria, complementando o perfume com uma dimensão física e envolvente.</p>
+        <p>A sinestesia cria assim uma <strong>experiência sensorial múltipla e simultânea</strong>, revelando uma sensação de reconforto e de algo vital, honesto e essencial. O pão é símbolo de nutrição básica e de trabalho digno, fazendo referência direta à profissão do padeiro como elemento positivo da sociedade.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- QUESTÃO 3 -->
+  <section id="q3" class="section">
+    <div class="q-card reveal">
+      <div class="q-number"><span>3</span></div>
+      <div class="q-title">Identificação do desejo do «eu» nas estrofes 5 e 6 — Conceção de poesia</div>
+      
+      <div class="q-body">
+        <p>Nas estrofes 5 e 6, o <strong>desejo do «eu lírico»</strong> é o de escrever um livro que funcione como espelho da sociedade lisboeta — um projeto poético com ambição <strong>realista e crítica</strong>.</p>
+        <p>O «eu» pretende, através da poesia, <strong>descrever/retratar a realidade urbana e social</strong> de Lisboa, com os seus contrastes, contradições e figuras humanas. Este projeto implica:</p>
+        <p><strong>1. Uma poesia de crítica social:</strong> O poeta quer «pintar» a sociedade «torta» — a decadência, as longas descidas morais, a mistura de reflexos dos próprios cidadãos — denunciando as hipocrisias da época.</p>
+        <p><strong>2. Uma poesia sensorialista:</strong> A conceção poética de Cesário Verde baseia-se na captação do real através dos sentidos — ver, cheirar, tocar a cidade —, transformando as perceções sensoriais em matéria poética.</p>
+        <span class="verse-quote">«[...] com versos magistrais, sinceros e reconfortantes.»</span>
+        <p><strong>3. Uma missão de autenticidade:</strong> Os «versos magistrais, sinceros e reconfortantes» revelam que o «eu» deseja uma poesia verdadeira, que não ilude nem romantiza, mas que ao mesmo tempo ofereça ao leitor uma experiência estética de valor.</p>
+        </div>
+    </div>
+  </section>
+ 
+  <!-- QUESTÃO 4 -->
+  <section id="q4" class="section">
+    <div class="q-card reveal">
+      <div class="q-number"><span>4</span></div>
+      <div class="q-title">Representação da cidade e dos tipos sociais — Perceção sensorial da realidade</div>
+  
+      <div class="q-body">
+        <p>Ao longo das estrofes 4 a 6, o «eu lírico» apresenta o sensorialismo como recurso central para retratar a cidade de Lisboa.</p>
+        <div class="sensory-grid">
+          <div class="sensory-pill">
+            <span class="pill-icon">👃</span>
+            <div class="pill-label">Perceção Olfativa</div>
+            <div class="pill-text">«Um cheiro salutar e honesto a pão do forno» (estrofe 4)</div>
+          </div>
+          <div class="sensory-pill">
+            <span class="pill-icon">🌡️</span>
+            <div class="pill-label">Perceção Tátil</div>
+            <div class="pill-text">«De uma padaria escala-se, inda quente» (estrofe 4)</div>
+          </div>
+          <div class="sensory-pill">
+            <span class="pill-icon">👁️</span>
+            <div class="pill-label">Perceção Visual</div>
+            <div class="pill-text">Figuras do cuteleiro e forjador ao trabalho, iluminadas a gás (estrofes 5–6)</div>
+          </div>
+          <div class="sensory-pill">
+            <span class="pill-icon">🔊</span>
+            <div class="pill-label">Perceção Auditiva</div>
+            <div class="pill-text">Sons dos ofícios manuais — martelos, ferramentas (estrofes 5–6)</div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">O sensorialismo funciona como estratégia poética para tornar a cidade <strong>concreta e palpável</strong>: o leitor não apenas «vê» Lisboa, mas também a cheira, sente o seu calor e ouve os seus sons. Esta multiplicidade de perceções reforça a visão realista e crítica do «eu lírico».</p>
+         </div>
+    </div>
+  </section>
+ 
+  <!-- QUIZ -->
+  <section id="quiz" class="section">
+    <div id="quiz-section">
+      <div class="quiz-header">
+        <h2>Quiz — Testa os teus conhecimentos</h2>
+        <p>5 perguntas · «O Sentimento dum Ocidental»</p>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div class="q-counter" id="q-counter">Pergunta 1 de 5</div>
+      </div>
+ 
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-question-text" id="quiz-q"></div>
+        <div class="quiz-options" id="quiz-opts"></div>
+        <div class="feedback-msg" id="feedback"></div>
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Próxima →</button>
+      </div>
+ 
+      <div class="result-screen" id="result-screen">
+        <div class="result-circle">
+          <div class="result-score" id="final-score">0</div>
+          <div class="result-label">/ 5</div>
+        </div>
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-sub" id="result-sub"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Tentar novamente</button>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+<footer>
+  Português · Agrupamento de Escolas da Batalha · 2025/2026 · Módulo 6 — Cesário Verde
+</footer>
+ 
+<script>
+  // ──── QUIZ DATA ────
+  const questions = [
+    {
+      q: "Quem escreveu «O Sentimento dum Ocidental»?",
+      opts: ["Fernando Pessoa", "Eça de Queirós", "Cesário Verde", "Antero de Quental"],
+      correct: 2,
+      feedback: {
+        ok: "Correto! Cesário Verde (1855–1886) escreveu este poema em 1880, considerado a sua obra-prima.",
+        fail: "Errado. O autor é Cesário Verde, poeta realista português que retrata Lisboa com um olhar sensorialista e crítico."
+      }
+    },
+    {
+      q: "Que tipo de sinestesia está presente nos versos «De uma padaria escala-se, inda quente, / Um cheiro salutar e honesto a pão do forno»?",
+      opts: ["Visual e auditiva", "Olfativa e tátil (temperatura)", "Gustativa e visual", "Auditiva e tátil"],
+      correct: 1,
+      feedback: {
+        ok: "Excelente! A sinestesia combina perceção olfativa («cheiro») e tátil/temperatura («quente»), criando uma experiência sensorial múltipla.",
+        fail: "Errado. A sinestesia combina a perceção olfativa (\"cheiro salutar\") com a perceção tátil de temperatura (\"inda quente\")."
+      }
+    },
+    {
+      q: "Quais as profissões mencionadas na estrofe 4 como elementos positivos da sociedade?",
+      opts: ["Pescador, carpinteiro e lavrador", "Cuteleiro, forjador e padeiro", "Médico, professor e padre", "Comerciante, advogado e juiz"],
+      correct: 1,
+      feedback: {
+        ok: "Correto! O cuteleiro, o forjador e o padeiro representam o trabalho honesto e digno, em contraste com a decadência moral da época.",
+        fail: "Errado. As profissões referidas são o cuteleiro, o forjador e o padeiro — ofícios manuais honestos e úteis à comunidade."
+      }
+    },
+    {
+      q: "Qual é o desejo do «eu lírico» nas estrofes 5 e 6?",
+      opts: ["Abandonar a cidade e viver no campo", "Escrever um livro que retrate a sociedade através de uma poesia realista e crítica", "Tornar-se pintor de paisagens", "Encontrar a paz espiritual na religião"],
+      correct: 1,
+      feedback: {
+        ok: "Muito bem! O «eu» ambiciona criar uma poesia que retrate a sociedade «torta» com «versos magistrais, sinceros e reconfortantes».",
+        fail: "Errado. O desejo é escrever um livro com uma poesia realista e crítica, que «pinte» a sociedade lisboeta com versos verdadeiros e significativos."
+      }
+    },
+    {
+      q: "A que equipa e estrofes corresponde este trabalho de grupo?",
+      opts: ["Equipa 1 · Estrofes 1–3", "Equipa 3 · Estrofes 7–9", "Equipa 2 · Estrofes 4–6", "Equipa 4 · Estrofes 10–12"],
+      correct: 2,
+      feedback: {
+        ok: "Correto! Este é o trabalho da Equipa 2, responsável pela análise das estrofes 4 a 6 da Parte III — «Ao gás».",
+        fail: "Errado. O trabalho corresponde à Equipa 2, que analisou as estrofes 4, 5 e 6."
+      }
+    }
+  ];
+ 
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+ 
+  function loadQuestion() {
+    const q = questions[currentQ];
+    document.getElementById('quiz-q').textContent = q.q;
+    document.getElementById('q-counter').textContent = `Pergunta ${currentQ + 1} de ${questions.length}`;
+    document.getElementById('progress').style.width = `${(currentQ / questions.length) * 100}%`;
+ 
+    const letters = ['A', 'B', 'C', 'D'];
+    const optsEl = document.getElementById('quiz-opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="opt-letter">${letters[i]}</span> ${opt}`;
+      btn.onclick = () => selectAnswer(i, btn);
+      optsEl.appendChild(btn);
+    });
+ 
+    document.getElementById('feedback').className = 'feedback-msg';
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('next-btn').className = 'next-btn';
+    answered = false;
+ 
+    // Animate in
+    anime({
+      targets: '#quiz-card',
+      opacity: [0, 1],
+      translateX: [30, 0],
+      duration: 400,
+      easing: 'easeOutCubic'
+    });
+ 
+    anime({
+      targets: '.option-btn',
+      opacity: [0, 1],
+      translateY: [12, 0],
+      delay: anime.stagger(80, { start: 100 }),
+      duration: 350,
+      easing: 'easeOutCubic'
+    });
+  }
+ 
+  function selectAnswer(idx, btn) {
+    if (answered) return;
+    answered = true;
+ 
+    const q = questions[currentQ];
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+ 
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+ 
+    if (idx === q.correct) {
+      score++;
+      btn.classList.add('correct');
+      feedback.textContent = '✓ ' + q.feedback.ok;
+      feedback.className = 'feedback-msg show ok';
+      anime({
+        targets: btn,
+        scale: [1, 1.03, 1],
+        duration: 400,
+        easing: 'easeOutElastic(1, .5)'
+      });
+    } else {
+      btn.classList.add('wrong');
+      allBtns[q.correct].classList.add('correct');
+      feedback.textContent = '✗ ' + q.feedback.fail;
+      feedback.className = 'feedback-msg show fail';
+      anime({
+        targets: btn,
+        translateX: [-6, 6, -4, 4, 0],
+        duration: 400,
+        easing: 'easeInOutSine'
+      });
+    }
+ 
+    nextBtn.className = 'next-btn show';
+  }
+ 
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ >= questions.length) {
+      showResult();
+    } else {
+      loadQuestion();
+    }
+  }
+ 
+  function showResult() {
+    document.getElementById('quiz-card').style.display = 'none';
+    const resultScreen = document.getElementById('result-screen');
+    resultScreen.className = 'result-screen show';
+ 
+    const msgs = [
+      { min: 0, max: 1, msg: "Continua a estudar!", sub: "Revê as respostas e tenta novamente." },
+      { min: 2, max: 3, msg: "Bom esforço!", sub: "Já dominaste alguns conceitos — revê as respostas erradas." },
+      { min: 4, max: 4, msg: "Muito bem!", sub: "Quase perfeito — mais um pouco e dominas o poema!" },
+      { min: 5, max: 5, msg: "Excelente! 🎉", sub: "Dominaste completamente «O Sentimento dum Ocidental»!" }
+    ];
+ 
+    const m = msgs.find(m => score >= m.min && score <= m.max);
+    document.getElementById('result-msg').textContent = m.msg;
+    document.getElementById('result-sub').textContent = m.sub;
+ 
+    anime({
+      targets: '#result-screen',
+      opacity: [0, 1],
+      scale: [0.9, 1],
+      duration: 500,
+      easing: 'easeOutBack'
+    });
+ 
+    anime({
+      targets: '#final-score',
+      innerHTML: [0, score],
+      round: 1,
+      duration: 800,
+      delay: 300,
+      easing: 'easeOutCubic',
+      update: function(anim) {
+        document.getElementById('final-score').textContent = Math.round(anim.animations[0].currentValue);
+      }
+    });
+ 
+    anime({
+      targets: '.result-circle',
+      scale: [0.5, 1.08, 1],
+      duration: 700,
+      delay: 200,
+      easing: 'easeOutElastic(1, .6)'
+    });
+  }
+ 
+  function restartQuiz() {
+    currentQ = 0;
+    score = 0;
+    answered = false;
+    document.getElementById('result-screen').className = 'result-screen';
+    document.getElementById('quiz-card').style.display = '';
+    loadQuestion();
+  }
+ 
+  // ──── NAVIGATION ────
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+ 
+    if (id === 'quiz') {
+      currentQ = 0; score = 0; answered = false;
+      document.getElementById('quiz-card').style.display = '';
+      document.getElementById('result-screen').className = 'result-screen';
+      loadQuestion();
+    }
+ 
+    // Animate reveal items
+    setTimeout(() => {
+      anime({
+        targets: '#' + id + ' .reveal',
+        opacity: [0, 1],
+        translateY: [24, 0],
+        delay: anime.stagger(120),
+        duration: 600,
+        easing: 'easeOutCubic'
+      });
+    }, 50);
+  }
+ 
+  // ──── PAGE LOAD ANIMATIONS ────
+  window.addEventListener('load', () => {
+    // Hide loader
+    setTimeout(() => {
+      anime({
+        targets: '#loading',
+        opacity: [1, 0],
+        duration: 600,
+        easing: 'easeInCubic',
+        complete: () => {
+          document.getElementById('loading').style.display = 'none';
+        }
+      });
+    }, 900);
+ 
+    // Stagger header elements
+    anime({
+      targets: ['#poem-tag', '#main-title', '#author-line', '#subtitle', '#divider'],
+      opacity: [0, 1],
+      translateY: [-20, 0],
+      delay: anime.stagger(120, { start: 800 }),
+      duration: 700,
+      easing: 'easeOutCubic'
+    });
+ 
+    anime({
+      targets: '#score-badge',
+      opacity: [0, 1],
+      scale: [0.5, 1.1, 1],
+      delay: 1200,
+      duration: 600,
+      easing: 'easeOutElastic(1, .6)'
+    });
+ 
+    anime({
+      targets: '#main-nav',
+      opacity: [0, 1],
+      translateY: [-10, 0],
+      delay: 1400,
+      duration: 500,
+      easing: 'easeOutCubic'
+    });
+ 
+    // Initial context section reveal
+    setTimeout(() => {
+      anime({
+        targets: '#contexto .reveal',
+        opacity: [0, 1],
+        translateY: [24, 0],
+        delay: anime.stagger(150),
+        duration: 700,
+        easing: 'easeOutCubic'
+      });
+    }, 1600);
+  });
+ 
+  // ──── NAV HOVER ANIMATIONS ────
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      anime({ targets: btn, scale: 1.04, duration: 200, easing: 'easeOutQuad' });
+    });
+    btn.addEventListener('mouseleave', () => {
+      anime({ targets: btn, scale: 1, duration: 200, easing: 'easeOutQuad' });
+    });
+  });
+ 
+  // ──── Q-CARD HOVER SPARK ────
+  document.querySelectorAll('.sensory-pill').forEach(pill => {
+    pill.addEventListener('mouseenter', () => {
+      anime({
+        targets: pill,
+        translateY: -4,
+        scale: 1.02,
+        borderColor: ['#9c7c50', '#8b2500'],
+        duration: 250,
+        easing: 'easeOutQuad'
+      });
+    });
+    pill.addEventListener('mouseleave', () => {
+      anime({
+        targets: pill,
+        translateY: 0,
+        scale: 1,
+        borderColor: '#9c7c50',
+        duration: 250,
+        easing: 'easeOutQuad'
+      });
+    });
+  });
+</script>
+</body>
+</html>
